@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="citic.shpsb.mapper.busi.Br54_cxqq_backMapper">
+
+	<sql id="base_columns">
+		bdhm,ah,msgseq,cljg,czsbyy,qrydt,orgkey,dealing_p,dealing_time,last_up_dt,msgcheckresult,status
+	</sql>
+
+	<select id="selectBr54_cxqq_backByVo" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back">
+		select b.*,m.party_class_cd,m.qrymode from br54_cxqq_back
+		b,Br54_cxqq_mx m where m.bdhm=b.bdhm
+		<if test="msgseq != null  and msgseq != '' ">
+			and b.msgseq = #{msgseq}
+		</if>
+		<if test="orgkey_disp != null  and orgkey_disp != '' ">
+			and b.orgkey in (${orgkey_disp})
+		</if>
+		<if test="bdhm != null  and bdhm != '' ">
+			and b.bdhm = #{bdhm}
+		</if>
+		<if test="status != null  and status != '' ">
+			and b.status=#{status}
+		</if>
+		<if test="cljg != null  and cljg != '' ">
+			and b.cljg=#{cljg}
+		</if>
+		<if test="qrymode != null  and qrymode != '' ">
+			and m.qrymode = #{qrymode}
+		</if>
+		<if test="party_class_cd != null  and party_class_cd != '' ">
+			and m.party_class_cd = #{party_class_cd}
+		</if>
+		<if test="qrydt_start != null  and qrydt_start != '' ">
+			and b.qrydt &gt;= #{qrydt_start}
+		</if>
+		<if test="qrydt_end != null  and qrydt_end != '' ">
+			and b.qrydt &lt;= #{qrydt_end}
+		</if>
+		<if test="ah != null  and ah != '' ">
+			and b.ah= #{ah}
+		</if>
+		order by b.cljg desc,b.status asc,b.qrydt desc,b.dealing_time desc
+	</select>
+
+	<select id="selectBr54_cxqq_back_msgByVo" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back_msg"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_msg">
+		select * from br54_cxqq_back_msg where 1=1
+
+		<if test="msgseq != null  and msgseq != '' ">
+			and msgseq = #{msgseq}
+		</if>
+		<if test="msg_filename != null  and msg_filename != '' ">
+			and msg_filename like '%'|| #{msg_filename}||'%'
+		</if>
+		<if test="create_dt_start != null  and create_dt_start != '' ">
+			and create_dt &gt;= #{create_dt_start}
+		</if>
+		<if test="create_dt_end != null  and create_dt_end != '' ">
+			and create_dt &lt;= #{create_dt_end}
+		</if>
+		<if test="status != null  and status != '' ">
+			and status= #{status}
+		</if>
+	</select>
+
+
+	<!-- 查询账户信息 -->
+	<select id="selectBr54_cxqq_back_acctByID" parameterType="String"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_acct">
+		select * from br54_cxqq_back_acct where bdhm=#{bdhm}
+	</select>
+	<select id="selectBr54_cxqq_back_acctListByVo" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_acct">
+		select * from br54_cxqq_back_acct where 1=1
+		<if test="bdhm != null  and bdhm != '' ">
+			and bdhm = #{bdhm}
+		</if>
+		<if test="msgseq != null  and msgseq != '' ">
+			and msgseq = #{msgseq}
+		</if>
+		<if test="qrydt_start != null  and qrydt_start != '' ">
+			and qrydt &gt;= #{qrydt_start}
+		</if>
+		<if test="qrydt_end != null  and qrydt_end != '' ">
+			and qrydt &lt;= #{qrydt_end}
+		</if>
+	</select>
+
+	<!-- 持有人资料查询 -->
+	<select id="selectBr54_cxqq_back_cardByID" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_card">
+		select * from br54_cxqq_back_card where bdhm = #{bdhm}
+	</select>
+	<select id="selectBr54_cxqq_back_cardListByVo" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_card">
+		select * from br54_cxqq_back_card where 1=1
+		<if test="bdhm != null  and bdhm != '' ">
+			and bdhm = #{bdhm}
+		</if>
+		<if test="msgseq != null  and msgseq != '' ">
+			and msgseq = #{msgseq}
+		</if>
+		<if test="ckrxm != null  and ckrxm != '' ">
+			and ckrxm like '%'|| #{ckrxm}||'%'
+		</if>
+		<if test="zzhm != null  and zzhm != '' ">
+			and zzhm = #{zzhm}
+		</if>
+		<if test="qrydt_start != null  and qrydt_start != '' ">
+			and qrydt &gt;= #{khrq_start}
+		</if>
+		<if test="qrydt_end != null  and qrydt_end != '' ">
+			and qrydt &lt;= #{qrydt_end}
+		</if>
+	</select>
+
+	<!-- 开户资料查询 -->
+	<select id="selectBr54_cxqq_back_partyByID" parameterType="String"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_party">
+		select * from br54_cxqq_back_party where bdhm=#{bdhm}
+	</select>
+	<select id="selectBr54_cxqq_back_partyListByVo" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_party">
+		select * from br54_cxqq_back_party where 1=1
+		<if test="bdhm != null  and bdhm != '' ">
+			and bdhm = #{bdhm}
+		</if>
+		<if test="msgseq != null  and msgseq != '' ">
+			and msgseq = #{msgseq}
+		</if>
+		<if test="dbrxm != null  and dbrxm != '' ">
+			and dbrxm like '%'|| #{dbrxm}||'%'
+		</if>
+		<if test="lxr != null  and lxr != '' ">
+			and lxr = #{lxr}
+		</if>
+		<if test="frdb != null  and frdb != '' ">
+			and frdb like '%'|| #{frdb}||'%'
+		</if>
+		<if test="khwd != null  and khwd != '' ">
+			and khwd = #{khwd}
+		</if>
+		<if test="qrydt_start != null  and qrydt_start != '' ">
+			and qrydt &gt;= #{khrq_start}
+		</if>
+		<if test="qrydt_end != null  and qrydt_end != '' ">
+			and qrydt &lt;= #{qrydt_end}
+		</if>
+	</select>
+
+	<!-- 交易明细查询 -->
+	<select id="selectBr54_cxqq_back_transByID" parameterType="String"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_trans">
+		select * from br54_cxqq_back_trans where bdhm=#{bdhm}
+	</select>
+	<select id="selectBr54_cxqq_back_transListByVo" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_trans">
+		select * from Br54_cxqq_back_trans where 1=1
+		<if test="bdhm != null  and bdhm != '' ">
+			and bdhm = #{bdhm}
+		</if>
+		<if test="msgseq != null  and msgseq != '' ">
+			and msgseq = #{msgseq}
+		</if>
+		<if test="qrydt_start != null  and qrydt_start != '' ">
+			and qrydt &gt;= #{qrydt_start}
+		</if>
+		<if test="qrydt_end != null  and qrydt_end != '' ">
+			and qrydt &lt;= #{qrydt_end}
+		</if>
+	</select>
+	<!-- 操作日志 -->
+	<select id="selectBr54_cxqq_back_czrzByID" parameterType="String"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_czrz">
+		select * from br54_cxqq_back_czrz where bdhm=#{bdhm}
+	</select>
+	<select id="selectBr54_cxqq_back_czrzListByVo" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_czrz">
+		select * from Br54_cxqq_back_czrz where 1=1
+		<if test="bdhm != null  and bdhm != '' ">
+			and bdhm = #{bdhm}
+		</if>
+		<if test="msgseq != null  and msgseq != '' ">
+			and msgseq = #{msgseq}
+		</if>
+	</select>
+
+	<!-- 交易关联号查询 -->
+	<select id="selectBr54_cxqq_back_jyglhByID" parameterType="String"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_jyglh">
+		select * from br54_cxqq_back_jyglh where bdhm=#{bdhm}
+	</select>
+	<select id="selectBr54_cxqq_back_jyglhListByVo" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_jyglh">
+		select * from br54_cxqq_back_jyglh where 1=1
+		<if test="bdhm != null  and bdhm != '' ">
+			and bdhm = #{bdhm}
+		</if>
+		<if test="msgseq != null  and msgseq != '' ">
+			and msgseq = #{msgseq}
+		</if>
+	</select>
+
+	<!-- 对端账号查询 -->
+	<select id="selectBr54_cxqq_back_ddzhByID" parameterType="String"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_ddzh">
+		select * from br54_cxqq_back_ddzh where bdhm=#{bdhm}
+	</select>
+	<select id="selectBr54_cxqq_back_ddzhListByVo" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_ddzh">
+		select * from br54_cxqq_back_ddzh where 1=1
+		<if test="bdhm != null  and bdhm != '' ">
+			and bdhm = #{bdhm}
+		</if>
+		<if test="msgseq != null  and msgseq != '' ">
+			and msgseq = #{msgseq}
+		</if>
+	</select>
+
+
+	<!-- 反馈文件信息 -->
+	<select id="selectBr54_cxqq_back_msgByID" parameterType="String"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_msg">
+		select * from br54_cxqq_back_msg where bdhm=#{bdhm}
+	</select>
+	<select id="selectBr54_cxqq_back_msgListByVo" parameterType="citic.shpsb.wlcx.domain.Br54_cxqq_back"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back_msg">
+		select * from Br54_cxqq_back_msg where 1=1
+		<if test="msgseq != null  and msgseq != '' ">
+			and msgseq = #{msgseq}
+		</if>
+	</select>
+
+
+	<delete id="deleteBr54_cxqq_backByID" parameterType="String">  
+  <![CDATA[ delete from Br54_cxqq_back where ah=#{ah} ]]>
+	</delete>
+
+	<select id="selectBr54_cxqq_backByID" parameterType="String"
+		resultType="citic.shpsb.wlcx.domain.Br54_cxqq_back">
+		select
+		<include refid="base_columns" />
+		from br54_cxqq_back
+		where bdhm=#{bdhm}
+	</select>
+
+</mapper> 

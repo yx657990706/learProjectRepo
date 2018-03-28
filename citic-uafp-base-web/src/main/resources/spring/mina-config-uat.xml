@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="  
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd         
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd             
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd         
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+    
+    <!-- 【柜面举报】接口处理类 -->
+	<bean id="caseHandler" class="citic.aml.sso.service.CaseHandler" >
+		<property name="ip"  value="10.2.47.162"></property>
+		<property name="port"   value="8021"></property>
+	</bean>
+	
+	<!-- 构造编码器 -->
+	<bean id="amlCodecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
+		<constructor-arg>
+			<bean class="citic.aml.sso.service.DtoCodecFactory">
+				<constructor-arg name="charsetName">
+					<value>GBK</value>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+
+	<!-- 构造日志过滤器 -->
+	<bean id="amlloggingFilter" class="org.apache.mina.filter.logging.LoggingFilter" />
+
+	<!-- 构造过滤器链 -->
+	<bean id="amlFilterChainBuilder"
+		class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">
+		<property name="filters">
+			<map>
+				<entry key="amlloggingFilter" value-ref="amlloggingFilter" />
+				<entry key="amlCodecFilter" value-ref="amlCodecFilter" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- 构造属性编辑器 -->
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.net.SocketAddress" value ="org.apache.mina.integration.beans.InetSocketAddressEditor" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- 构造Server端 【柜面举报功能】-->
+	<bean id="amlAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor"
+		init-method="bind" destroy-method="unbind">
+		<property name="defaultLocalAddress" value=":28001" />
+		<property name="handler" ref="caseHandler" />
+		<property name="filterChainBuilder" ref="amlFilterChainBuilder" />
+	</bean>
+
+	<!-- 990001_柜面登录校验客户端(定长)-->
+	<bean id="SsoService" class="citic.aml.sso.service.SsoService" init-method="init" destroy-method="close">
+	    <!-- 开发环境：KA环境 -->
+		<!-- <property name="host" value="21.96.164.120"></property> -->
+		<!-- 开发环境：KB环境 -->
+		<!--<property name="host" value="21.96.164.234"></property> -->
+		<!-- SIT环境 -->
+		<!-- <property name="host" value="21.96.164.234"></property>  -->
+		<!-- UAT -->
+		<property name="host" value="21.96.166.234"></property>
+		<property name="prot" value="8112" > </property>
+		<property name="mainsysId" value="99" > </property>
+	</bean>
+	<!-- HMD002/HMD003/HMD004_人脸识别名单接口(xml)-->
+	<bean id="Cgb_face_dataHmdSendService" class="citic.cgb.face.service.Cgb_face_dataHmdSendService">
+	    <!-- DEV -->
+	    <!--<property name="wg_url" value="http://21.96.164.234:8113"></property>-->
+	    <!-- SIT -->
+	    <!--<property name="wg_url" value="http://21.96.165.43:8113"></property> -->
+	    <!-- UAT -->
+	    <property name="wg_url" value="http://21.96.166.234:8113"></property> 
+	    <!-- DEV -->
+	    <!-- <property name="url" value="http://10.2.47.17:9080/api/service"></property>-->
+	    <!-- SIT -->
+	    <!--<property name="url" value="http://10.2.48.139:9080/api/service"></property>-->
+	    <!-- UAT -->
+		<property name="url" value="http://10.2.49.26:9080/api/service"></property>
+		<property name="receiverId" value="RLSB"></property>
+		<property name="encoding" value="GBK"></property>
+		<property name="senderId" value="AFPM"></property>
+	</bean>
+	<!-- 影像查询-->
+	<bean id="imageQuary" class="citic.cgb.tools.ImageQuary">
+		<property name="ip"  value="10.2.47.162"></property>
+		<property name="port"   value="8021"></property>
+	</bean>
+	<!-- 文服推送文件（柜面高法附件）-->
+	<bean id="wfTools" class="citic.cgb.tools.WfTools">
+	     <!-- DEV -->
+		<!--<property name="ip"  value="21.96.1.101"></property>-->
+		 <!-- SIT -->
+		<!--<property name="ip"  value="21.96.1.100"></property>-->
+		 <!-- UAT -->
+		<property name="ip"  value="21.96.33.82"></property>
+		<property name="port"   value="32792"></property>
+		<property name="timeout"   value="30"></property>
+	</bean>
+</beans>
+	

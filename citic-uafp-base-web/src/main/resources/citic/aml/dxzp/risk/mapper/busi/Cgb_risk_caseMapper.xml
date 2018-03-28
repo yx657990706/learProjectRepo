@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<mapper namespace="citic.dxzp.risk.mapper.busi.Cgb_risk_caseMapper"> 
+ <sql id="base_columns"> 
+    caseid,organkey,suborgankey,accountname,account,cardnumber,je,infosource,happendate,casedesc,infochannel,channeldesc,isreport,dealorgan,status_cd,create_user,create_dt,check_user,check_dt,recheck_user,recheck_dt,risk_category,risk_sub_category,bussines_line,risk_level
+ </sql> 
+    
+    
+  <select id="selectCgb_risk_caseByVo" parameterType="citic.dxzp.risk.domain.Cgb_risk_case" resultType="citic.dxzp.risk.domain.Cgb_risk_case"> 
+     select 
+      <include refid="base_columns" /> 
+      from cgb_risk_case 
+      <where> 
+      <if test="suborgankey != null  and suborgankey != '' "> 
+         and suborgankey = #{suborgankey}
+      </if> 
+      <if test="happendate_q != null  and happendate_q != '' "> 
+         and happendate &gt;= #{happendate_q} 
+      </if> 
+      <if test="happendate_z != null  and happendate_z != '' "> 
+         and happendate &lt;= #{happendate_z} 
+      </if> 
+      <if test="accountname != null  and accountname != '' "> 
+         and accountname like '%'||#{accountname}||'%'  
+      </if> 
+       <if test="account != null  and account != '' "> 
+         and account = #{account} 
+      </if>
+       <if test="cardnumber != null  and cardnumber != '' "> 
+         and cardnumber = #{cardnumber} 
+      </if>
+      <if test="status_cd != null  and status_cd != '' "> 
+         and status_cd = #{status_cd} 
+      </if>
+       <if test="organstr != null  and organstr != '' "> 
+         and suborgankey in (${organstr}) 
+      </if> 
+       <if test="status_cd_x != null  and status_cd_x != '' "> 
+         and status_cd in (${status_cd_x})
+      </if> 
+      <if test=" status_cd != null  and status_cd != '' "> 
+         and status_cd = #{status_cd}
+      </if>
+    </where> 
+    order by happendate desc
+  </select> 
+  
+  
+     
+  <select id="selectGetRisk_subCategory" parameterType="String" resultType="citic.dxzp.risk.domain.Cgb_risk_category"> 
+     
+  select codekey ,codeval from cgb_risk_category where pre_id=#{pre_id}
+  </select> 
+  
+  <select id="selectCgb_risk_caseByID" parameterType="citic.dxzp.risk.domain.Cgb_risk_case" resultType="citic.dxzp.risk.domain.Cgb_risk_case"> 
+     select 
+      <include refid="base_columns" /> 
+      from cgb_risk_case 
+        where caseid =#{caseid}
+  </select> 
+  
+    <update id="updateCgb_risk_caseStatus_cdByPl_choose" parameterType="citic.dxzp.risk.domain.Cgb_risk_case"> 
+  update cgb_risk_case 
+  <set>
+    <if test="check_dt != null and check_dt != ''">
+   check_dt=#{check_dt},
+  </if>
+  <if test="check_user != null and check_user != ''">
+   check_user=#{check_user},
+  </if>
+   <if test="recheck_user != null and recheck_user != ''">
+   recheck_user=#{recheck_user},
+  </if>
+  <if test="recheck_dt != null and recheck_dt != ''">
+   recheck_dt=#{recheck_dt},
+  </if>
+  <if test="status_cd != null">
+   status_cd=#{status_cd}
+  </if> 
+  </set> 
+  where caseid in (${in_key}) 
+  </update> 
+ 
+  <update id="updateCgb_risk_caseStatus_cdByBack" parameterType="citic.dxzp.risk.domain.Cgb_risk_case"> 
+  update cgb_risk_case 
+  <set>
+    <if test="check_dt != null and check_dt != ''">
+   check_dt=#{check_dt},
+  </if>
+  <if test="check_user != null and check_user != ''">
+   check_user=#{check_user},
+  </if>
+   <if test="recheck_user != null and recheck_user != ''">
+   recheck_user=#{recheck_user},
+  </if>
+  <if test="recheck_dt != null and recheck_dt != ''">
+   recheck_dt=#{recheck_dt},
+  </if>
+  <if test="status_cd != null">
+   status_cd=#{status_cd}
+  </if> 
+  </set> 
+  where caseid =#{caseid}
+  </update> 
+  
+  <insert id="insertCgb_risk_case" parameterType="citic.dxzp.risk.domain.Cgb_risk_case">
+     insert into cgb_risk_case (<include refid="base_columns" />)
+     values(
+     #{caseid},#{organkey},#{suborgankey},#{accountname},#{account},#{cardnumber},#{je},#{infosource},#{happendate},#{casedesc},
+     #{infochannel},#{channeldesc},#{isreport},#{dealorgan},#{status_cd},#{create_user},#{create_dt},#{check_user},#{check_dt},
+     #{recheck_user},#{recheck_dt},#{risk_category},#{risk_sub_category},#{bussines_line},#{risk_level}
+     )
+  </insert>
+  
+  <update id="updateCgb_risk_case" parameterType="citic.dxzp.risk.domain.Cgb_risk_case"> 
+  update cgb_risk_case 
+  <set> 
+  <if test="organkey != null">
+organkey=#{organkey},
+</if> 
+  <if test="suborgankey != null">
+suborgankey=#{suborgankey},
+</if> 
+<if test="accountname != null">
+accountname=#{accountname},
+</if> 
+<if test="account != null">
+account=#{account},
+</if> 
+<if test="cardnumber != null">
+cardnumber=#{cardnumber},
+</if> 
+<if test="je != null">
+je=#{je},
+</if> 
+<if test="infosource != null">
+infosource=#{infosource},
+</if> 
+<if test="happendate != null">
+happendate=#{happendate},
+</if> 
+<if test="casedesc != null">
+casedesc=#{casedesc},
+</if> 
+<if test="infochannel != null">
+infochannel=#{infochannel},
+</if> 
+<if test="channeldesc != null">
+channeldesc=#{channeldesc},
+</if> 
+<if test="isreport != null">
+isreport=#{isreport},
+</if> 
+<if test="dealorgan != null">
+dealorgan=#{dealorgan},
+</if> 
+<if test="risk_category != null">
+risk_category=#{risk_category},
+</if> 
+<if test="risk_sub_category != null">
+risk_sub_category=#{risk_sub_category},
+</if> 
+<if test="bussines_line != null">
+bussines_line=#{bussines_line},
+</if> 
+<if test="risk_level != null">
+risk_level=#{risk_level}
+</if> 
+  </set> 
+  where caseid =#{caseid}
+  </update> 
+  
+  <delete id="deleteCgb_risk_caseByID" parameterType="String">
+      <![CDATA[ delete from cgb_risk_case where caseid =#{_parameter} ]]>
+  </delete>
+</mapper> 

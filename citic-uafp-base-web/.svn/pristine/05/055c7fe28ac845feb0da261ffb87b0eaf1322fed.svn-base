@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<mapper namespace="citic.dxzp.cases.mapper.busi.Br22_case_cgbMapper"> 
+ 
+
+ 
+     <insert id="insertBr22_case" parameterType="citic.dxzp.cases.domain.Br22_case"> 
+    insert into br22_case (caseid,casename,datasource,featurecodetype,applicationtype,ctid,citp,telphone,orgkey,event_desc,data_dt,validate_id,create_user,create_dt,msg_type_cd,status_cd,toorg)
+    values (#{caseid},#{casename},#{datasource},#{featurecodetype},#{applicationtype},#{ctid},#{citp},#{telphone},#{orgkey},#{event_desc},#{data_dt},#{validate_id},#{create_user},#{create_dt},#{msg_type_cd},#{status_cd},#{toorg})
+    </insert> 
+ 
+ 
+  <insert id="insertBr22_case_trans" parameterType="citic.dxzp.datainfo.domain.Bb21_trans"> 
+    insert into br22_case_trans(caseid,trans_key,cardnumber,trans_amt,data_dt,tx_dt)
+    values(#{caseid},#{trans_key},#{cardnumber},#{transamt},#{data_dt},#{tx_dt})
+    </insert>  
+ 
+
+    <insert id="insertBr21_trans" parameterType="citic.dxzp.datainfo.domain.Bb21_trans"> 
+    insert into bb21_trans(trans_key,accountname,cardnumber,subaccountserial,subaccountnumber,transactiontype,currency,transamt,accountbalance,tx_dt,transactiontime,transactionserial,opp_name,opp_cardnum,
+                   opp_crednum,opp_openbank_id,opp_openbank,transactionstatus,transactionaddress,ipadress,mac,remark,tstp_type_f_cd,validate_id,state_cd,isceased)
+    values(#{trans_key},#{accountname},#{cardnumber},#{subaccountserial},#{subaccountnumber},#{transactiontype},#{currency},#{transamt},#{accountbalance},#{tx_dt},#{transactiontime},#{transactionserial},
+                    #{opp_name},#{opp_cardnum},#{opp_crednum},#{opp_openbank_id},#{opp_openbank},#{transactionstatus},#{transactionaddress},#{ipadress},#{mac},#{remark},#{tstp_type_f_cd},#{validate_id},#{state_cd},#{isceased})
+    </insert> 
+    
+   <insert id="insertBr22_stop" parameterType="citic.dxzp.cases.domain.Br22_stop"> 
+    insert into br22_stop(caseid,hxappid,result,cardnumber,currency,accountbalance,feedback_dt)
+    values(#{caseid},#{hxappid},#{result},#{cardnumber},#{currency},#{accountbalance},#{feedback_dt})
+    </insert> 
+  
+     <insert id="insertBr22_attach" parameterType="citic.dxzp.cases.domain.Br22_attach"> 
+    insert into br22_attach(fileno ,caseid,filename,filepath,create_dt)
+    values(#{fileno },#{caseid},#{filename},#{filepath},#{create_dt})
+    </insert> 
+ 
+</mapper> 

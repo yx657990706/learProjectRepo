@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="citic.cgb.xmlmsg.mapper.busi.Afp006DtoMapper">
+
+	<select id="selectBb11_aml_listByInterface" parameterType="citic.cgb.xmlmsg.domain.Afp006Dto" resultType="citic.cgb.xmlmsg.domain.Afp006Dto">
+	   SELECT * FROM (
+       select md_code,source_id,pname,idtype,idvalue,san_name_type,black_class_cd,black_action,data_date,act_status,remark,send_time,send_flag
+        ,ROW_NUMBER() OVER (PARTITION BY pname , idvalue ORDER BY data_date  DESC)   ROW_NUM
+       from bb11_aml_list
+       where pname = #{party_name} and idvalue = #{cust_id_no}
+        ) T WHERE ROW_NUM = 1  
+	</select>
+
+    
+    <insert id="InsertBb11_aml_warn_logByInterface" parameterType="citic.cgb.xmlmsg.domain.Afp006Dto">
+      insert into bb11_aml_warn_log(tx_organkey,acct_organkey,tx_time,party_id,party_class_cd,party_name,cust_id_no,sys_ind,channel,tx_acctnum,curr_cd,amt,alert_reason,san_name,biz_type,tx_result,alert_type,opp_acct_organkey,opp_party_class_cd,opp_tx_acctnum,opp_party_name,opp_cust_id_no,rt_typ,create_time,send_flag)
+      values (#{tx_organkey},#{acct_organkey},#{tx_time},#{party_id},#{party_class_cd},#{party_name},#{cust_id_no},#{sys_ind},#{channel},#{tx_acctnum},#{curr_cd},#{amt},#{alert_reason},#{san_name},#{biz_type},#{tx_result},#{alert_type},#{opp_acct_organkey},#{opp_party_class_cd},#{opp_tx_acctnum},#{opp_party_name},#{opp_cust_id_no},#{rt_typ},#{create_time},#{send_flag})
+    </insert>
+
+</mapper> 

@@ -1,0 +1,29 @@
+/***********报表列表表头区样式***********************************/
+.report_title,.report_list,.report_detail table, .report_foot { width:98%; margin:auto; }
+.report_title font,.report_list font,.report_detail font,.report_foot font{ font-size:12px; color:#555; }
+.report_title strong,.report_list strong,.report_detail strong,.report_foot strong{ font-size:12px; color:#00557D; }
+.report_title td font {
+	font-size: 18px;
+}
+
+.report_title, .report_foot, .report_list { border-collapse:collapse; }
+.report_list td,.report_list .report_title td,.report_list .body_tr td,.report_list .total_tr td { border:1px solid #ccc; }
+.report_list .body_tr td{ border-left:none; border-right:1px dotted #bfbfbf;border-top:1px dotted #bfbfbf;border-bottom:1px dotted #bfbfbf }
+.report_title  td { white-space: nowrap;background:#fff; font-size: 12px; text-align:center; height:30px; }
+.report_list thead td { white-space: nowrap;background:#f9f9f9; font-size: 12px; text-align:center; height:30px; }
+.body_tr td,.report_list tbody td { background:#fff; height:26px; line-height:26px; }
+tbody .deeplist td { background:#f8fafa; }
+
+.total_tr td { height:26px; line-height:26px; }
+
+.report_detail { margin:3px auto; background:#EFF2F8; border:1px solid #9ABCE8; }
+.report_detail table { border-spacing:0; padding:0; jerry:expression(cellSpacing="0"); }
+.report_detail td{text-align:right; }
+td.report_detail_td { border-right:1px solid #CBDDF2; padding:2px; height:26px; line-height:26px; text-align:left; }
+
+/***********报表表尾区样式************************************/
+.report_foot { margin-top:8px; border:none; }
+.report_foot td{
+	font-size: 12px; height:26px; line-height:26px;
+}
+

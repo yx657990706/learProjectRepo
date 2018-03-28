@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<mapper namespace="citic.gdjc.ckdj.mapper.busi.Br50_cxqq_mxMapper"> 
+ 
+ <sql id="base_columns"> 
+    docno,caseno,uniqueid,type,querymode,name,idtype,id,account,acctype,orgcode,buslicense,threeinone,location,startdate,enddate,qrydt,orgkey
+ </sql> 
+ 
+  <select id="selectBr50_cxqq_mxByVo" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq_mx" resultType="citic.gdjc.ckdj.domain.Br50_cxqq_mx"> 
+   select * from br50_cxqq_mx where 1=1 
+      <if test="docno != null  and docno != '' "> 
+       and  docno = #{docno} 
+      </if> 
+       <if test="caseno != null  and caseno != '' "> 
+        and  caseno = #{caseno} 
+      </if>
+      <if test="type != null  and type != '' "> 
+        and  type = #{type} 
+      </if>
+      <if test="querymode != null  and querymode != '' "> 
+       and   querymode = #{querymode} 
+      </if>
+      <if test="account != null  and account != '' "> 
+       and   account = #{account} 
+      </if>
+      <if test="uniqueid != null  and uniqueid != '' "> 
+       and    uniqueid like '%'|| #{uniqueid}||'%' 
+      </if>
+       <if test="qrydt_start != null  and qrydt_start != '' ">
+		and qrydt &gt;= #{qrydt_start}
+	</if>
+	<if test="qrydt_end != null  and qrydt_end != '' ">
+		and qrydt &lt;= #{qrydt_end}
+	</if>
+  </select> 
+  
+  <!-- 查询反馈信息 -->
+  <select id="selectBr50_cxqq_backListByVo" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq_back" resultType="citic.gdjc.ckdj.domain.Br50_cxqq_back"> 
+   select b.*,m.type,m.querymode,m.account,c.datasource from br50_cxqq_back b,br50_cxqq_mx m,br50_cxqq c where b.uniqueid=m.uniqueid and
+ b.docno=m.docno and c.docno=b.docno and b.caseno=m.caseno and c.caseno=b.caseno
+      <if test="uniqueid != null  and uniqueid != '' "> 
+       and   b.uniqueid = #{uniqueid} 
+      </if>
+      <if test="docno != null  and docno != '' "> 
+       and   b.docno = #{docno} 
+      </if>
+      <if test="caseno != null  and caseno != '' "> 
+       and   b.caseno = #{caseno} 
+      </if> <if test="status != null  and status != '' "> 
+       and   b.status = #{status} 
+      </if>
+       <if test="cxfkjg != null  and cxfkjg != '' "> 
+       and   b.cxfkjg = #{cxfkjg} 
+      </if>
+      <if test="qrydt_start != null  and qrydt_start != '' ">
+		and b.qrydt &gt;= #{qrydt_start}
+	</if>
+	<if test="qrydt_end != null  and qrydt_end != '' ">
+		and b.qrydt &lt;= #{qrydt_end}
+	</if>
+        <if test="orgkey_disp != null  and orgkey_disp != '' "> 
+       and  b.orgkey in(${orgkey_disp})
+      </if>
+      <if test="querymode != null  and querymode != '' "> 
+       and   m.querymode = #{querymode} 
+      </if> 
+      <if test="account != null  and account != '' "> 
+       and   m.account = #{account} 
+      </if> 
+      <if test="type != null  and type != '' "> 
+       and   m.type = #{type} 
+      </if> 
+       <if test="datasource != null  and datasource != '' "> 
+       and  c.datasource = #{datasource} 
+      </if> 
+      order by cxfkjg desc,status desc,qrydt desc
+  </select> 
+  
+  
+ 
+  <insert id="insertBr50_cxqq_mx" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq_mx"> 
+    insert into br50_cxqq_mx(
+    <include refid="base_columns" /> 
+    ) values(
+    #{docno},#{caseno},#{uniqueid},#{type},#{querymode},#{name},#{idtype},#{id},#{account},#{acctype},#{orgcode},#{buslicense},#{threeinone},#{location},#{startdate},#{enddate},#{qrydt},#{orgkey},#{yrwlsh}
+    ) 
+    </insert> 
+ 
+  <update id="updateBr50_cxqq_mx" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq_mx"> 
+  update br50_cxqq_mx 
+  <set> 
+  <if test="docno != null">
+docno=#{docno},
+</if> 
+<if test="caseno != null">
+caseno=#{caseno},
+</if> 
+<if test="uniqueid != null">
+uniqueid=#{uniqueid},
+</if> 
+<if test="type != null">
+type=#{type},
+</if> 
+<if test="querymode != null">
+querymode=#{querymode},
+</if> 
+<if test="name != null">
+name=#{name},
+</if> 
+<if test="idtype != null">
+idtype=#{idtype},
+</if> 
+<if test="id != null">
+id=#{id},
+</if> 
+<if test="account != null">
+account=#{account},
+</if> 
+<if test="acctype != null">
+acctype=#{acctype},
+</if> 
+<if test="orgcode != null">
+orgcode=#{orgcode},
+</if> 
+<if test="buslicense != null">
+buslicense=#{buslicense},
+</if> 
+<if test="threeinone != null">
+threeinone=#{threeinone},
+</if> 
+<if test="location != null">
+location=#{location},
+</if> 
+<if test="startdate != null">
+startdate=#{startdate},
+</if> 
+<if test="enddate != null">
+enddate=#{enddate},
+</if> 
+<if test="qrydt != null">
+qrydt=#{qrydt},
+</if> 
+<if test="orgkey != null">
+orgkey=#{orgkey},
+</if> 
+<if test="yrwlsh != null">
+yrwlsh=#{yrwlsh}
+</if> 
+
+  </set> 
+  where docno=#{docno} 
+  </update> 
+ 
+  <delete id="deleteBr50_cxqq_mxByID" parameterType="String">  
+  <![CDATA[ delete from br50_cxqq_mx where docno=#{docno} ]]>
+   </delete> 
+ 
+  <select id="selectBr50_cxqq_mxByID" parameterType="String" resultType="citic.gdjc.ckdj.domain.Br50_cxqq_mx"> 
+  select 
+  <include refid="base_columns" /> 
+  from br50_cxqq_mx 
+  where docno=#{docno} 
+  </select> 
+ 
+</mapper> 

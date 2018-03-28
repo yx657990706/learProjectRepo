@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+	<!-- 报表工具 -->
+	<bean id="reportManager"   class="com.citic.dev.report.ReportManager" ></bean>
+	
+	<!-- 查询工具 -->
+	<!--oracle 数据库SQL解析，与数据库无关 -->
+	<!-- <bean id="oracleSP" class="com.citic.dev.das.oracle.OracleSqlParse"></bean>  -->
+	<bean id="db2SP" class="com.citic.dev.das.db2.Db2SqlParse"></bean>
+	<!--oracle 数据库元数据信息，数据库相关 -->
+	<bean id="metaDbInfo" class="com.citic.dev.das.base.DefaultMetaService">
+		<property name="dataSource" ref="busiDataSource"></property>
+	</bean>
+	<!--oracle 数据库表解析器，数据库相关 -->
+	<bean id="metaTableParse" class="com.citic.dev.das.oracle.OracleTableParse">
+		<!-- <property name="sqlParse" ref="oracleSP"></property> -->
+		<property name="sqlParse" ref="db2SP"></property>
+		<property name="dbMetaInfo" ref="metaDbInfo"></property>
+	</bean>
+	<bean id="metaTabQuery" class="com.citic.dev.das.base.TableServiceImp">
+		<property name="dataSource" ref="busiDataSource"></property>
+		<!-- <property name="sqlParse" ref="oracleSP"></property> -->
+		<property name="sqlParse" ref="db2SP"></property>
+		<property name="tableParse" ref="metaTableParse"></property>
+	</bean>
+
+	<bean id="condDbService" class="com.citic.dev.was.CondDbService">
+		<property name="dbTabQuery" ref="metaTabQuery"></property>
+	</bean>
+	<bean id="defaultInput" class="com.citic.dev.was.parm.DefaultInput">
+		<property name="condDbService" ref="condDbService" />
+	</bean>
+	<bean id="cdSelect" parent="defaultInput" class="com.citic.dev.was.parm.CdSelect">
+	</bean>
+	<bean id="cdRadio" parent="defaultInput" class="com.citic.dev.was.parm.CdRadio">
+	</bean>
+	<bean id="cdCheck" parent="defaultInput" class="com.citic.dev.was.parm.CdCheck">
+	</bean>
+
+
+	<bean id="condTplaService" class="com.citic.dev.was.CondTplaDb">
+	</bean>
+	<bean id="condParseService" class="com.citic.dev.was.CondParseService">
+	</bean>
+
+		<bean id="htmlParse" class="com.citic.dev.dcs.HtmlParse">
+		<property name="metaDbTab" ref="metaTabQuery"></property>
+		<property name="codeService" ref="queryCatch"></property>
+	</bean>
+
+	<bean id="webParmService" class="com.citic.dev.was.WebParmService"></bean>
+	<bean id="modeService" class="com.citic.dev.dqs.ModeServiceDbImp">
+		<property name="metaDbTab" ref="metaTabQuery"></property>
+		<property name="htmlParse" ref="htmlParse"></property>
+	</bean>
+	<bean id="dataChangeService" class="com.citic.dev.dcs.DefaultDataChange"></bean>
+
+	<!-- 针对不同的业务系统选择不同的实现类 针对反洗钱和反欺诈在执行层面不一样 -->
+	<bean id="queryCatch" class="com.citic.devimp.amlplus.QueryCatch">
+	<property name="cm" ref="codeService"></property>
+	</bean>
+	
+	<bean id="reportCatch" class="com.citic.devimp.amlplus.ReportCatch">
+	</bean>
+	
+	<bean id="userImp" class="com.citic.devimp.amlplus.UserImp">
+	</bean>
+	
+</beans>

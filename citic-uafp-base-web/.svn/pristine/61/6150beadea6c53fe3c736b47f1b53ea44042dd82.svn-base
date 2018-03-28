@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<mapper namespace="citic.dxzp.count.mapper.busi.Dx_trade_countMapper"> 
+   <select id="selectDx_trade_totalByVo" parameterType="citic.dxzp.count.domain.Dx_trade_count"  resultType="citic.dxzp.count.domain.Dx_trade_count">
+ select
+    case
+        when grouping(city)=0
+        then city
+        else '总计'
+    end as city,
+    case
+        when grouping( business_kind)=0
+        then business_kind
+        else '小计'
+    end                   as business_kind,
+    count(*)             as business_num,
+    count(distinct(accountnumber)) as accountnumber,
+    sum(frozedbalance)    as money
+from
+    (
+        select
+            case
+                when left(accountnumber, 4) = '9111'
+                then substr(accountnumber, 5, 2)
+                else substr(accountnumber, 7, 2)
+            end    as city,
+            '快速冻结' as business_kind,
+            t.accountnumber,
+            to_number(decode(frozedbalance,'',null,frozedbalance)) frozedbalance
+        from
+            br25_frozen_back t
+        where
+            length(accountnumber, codeunits16) = 19
+		<if test="qrydt_start!=null and qrydt_start!=''">
+			and qrydt &gt;= #{qrydt_start}
+		</if>
+		<if test="qrydt_end!=null and qrydt_end!=''">
+			and qrydt &lt;= #{qrydt_end}
+		</if>
+        union all
+        select
+            case
+                when left(accountnumber, 4) = '9111'
+                then substr(accountnumber, 5, 2)
+                else substr(accountnumber, 7, 2)
+            end    as city,
+            '快速查询' as business_kind,
+            t.accountnumber,
+            0.00
+        from
+            br24_q_main t
+        where
+            length(accountnumber, codeunits16) = 19
+		<if test="qrydt_start!=null and qrydt_start!=''">
+			and qrydt &gt;= #{qrydt_start}
+		</if>
+		<if test="qrydt_end!=null and qrydt_end!=''">
+			and qrydt &lt;= #{qrydt_end}
+		</if>
+        union all
+        select
+            case
+                when left(accountnumber, 4) = '9111'
+                then substr(accountnumber, 5, 2)
+                else substr(accountnumber, 7, 2)
+            end    as city,
+            '紧急止付' as business_kind,
+            b.accountnumber,
+            to_number(decode(b.accountbalance,'',null,b.accountbalance))
+        from
+            br25_stop_back b
+        where
+            length(accountnumber, codeunits16) = 19
+		<if test="qrydt_start!=null and qrydt_start!=''">
+			and qrydt &gt;= #{qrydt_start}
+		</if>
+		<if test="qrydt_end!=null and qrydt_end!=''">
+			and qrydt &lt;= #{qrydt_end}
+		</if>
+    )   group by
+    city,
+    business_kind  with  cube   order by   1,2
+	</select>
+</mapper> 

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<mapper namespace="citic.whpsb.mapper.busi.Br51_cxqq_mxMapper"> 
+ 
+ <sql id="base_columns"> 
+    ah,msgseq,cbdw,cbr1,cbr2,zzlx,zzhm,mc,party_class_cd,zh,cxkssj,cxjssj,qrydt,orgkey,qrymode,bdhm
+ </sql> 
+ 
+  <select id="selectBr51_cxqq_mxByVo" parameterType="citic.whpsb.wlcx.domain.Br51_cxqq_mx" resultType="citic.whpsb.wlcx.domain.Br51_cxqq_mx"> 
+   select * from br51_cxqq_mx  where  1=1
+  
+      <if test="ah != null  and ah != '' "> 
+        and  ah = #{ah} 
+      </if> 
+      <if test="msgseq != null  and msgseq != '' "> 
+        and  msgseq = #{msgseq} 
+      </if> 
+      <if test="bdhm != null  and bdhm != '' "> 
+        and  bdhm = #{bdhm} 
+      </if> 
+      <if test="party_class_cd != null  and party_class_cd != '' "> 
+        and  party_class_cd = #{party_class_cd} 
+      </if> 
+      <if test="qrymode != null  and qrymode != '' "> 
+        and  qrymode = #{qrymode} 
+      </if> 
+       <if test="qrymode != null  and qrymode != '' "> 
+        and  qrymode = #{qrymode} 
+      </if> 
+  </select> 
+ 
+  <insert id="insertBr51_cxqq_mx" parameterType="citic.whpsb.wlcx.domain.Br51_cxqq_mx"> 
+    insert into br51_cxqq_mx(
+    <include refid="base_columns" /> 
+    ) values(
+    #{ah},#{msgseq},#{cbdw},#{cbr1},#{cbr2},#{zzlx},#{zzhm},#{mc},#{party_class_cd},#{zh},#{cxkssj},#{cxjssj},#{qrydt},#{orgkey},#{qrymode}
+    ) 
+    </insert> 
+ 
+  <update id="updateBr51_cxqq_mx" parameterType="citic.whpsb.wlcx.domain.Br51_cxqq_mx"> 
+  update br51_cxqq_mx 
+  <set> 
+  <if test="ah != null">
+ah=#{ah},
+</if> 
+<if test="msgseq != null">
+msgseq=#{msgseq},
+</if> 
+<if test="cbdw != null">
+cbdw=#{cbdw},
+</if> 
+<if test="cbr1 != null">
+cbr1=#{cbr1},
+</if> 
+<if test="cbr2 != null">
+cbr2=#{cbr2},
+</if> 
+<if test="zzlx != null">
+zzlx=#{zzlx},
+</if> 
+<if test="zzhm != null">
+zzhm=#{zzhm},
+</if> 
+<if test="mc != null">
+mc=#{mc},
+</if> 
+<if test="party_class_cd != null">
+party_class_cd=#{party_class_cd},
+</if> 
+<if test="zh != null">
+zh=#{zh},
+</if> 
+<if test="cxkssj != null">
+cxkssj=#{cxkssj},
+</if> 
+<if test="cxjssj != null">
+cxjssj=#{cxjssj},
+</if> 
+<if test="qrydt != null">
+qrydt=#{qrydt},
+</if> 
+<if test="orgkey != null">
+orgkey=#{orgkey},
+</if> 
+<if test="qrymode != null">
+qrymode=#{qrymode}
+</if> 
+
+  </set> 
+  where ah=#{ah} 
+  </update> 
+ 
+  <delete id="deleteBr51_cxqq_mxByID" parameterType="String">  
+  <![CDATA[ delete from br51_cxqq_mx where ah=#{ah} ]]>
+   </delete> 
+ 
+  <select id="selectBr51_cxqq_mxByID" parameterType="String" resultType="citic.whpsb.wlcx.domain.Br51_cxqq_mx"> 
+  select *
+  from br51_cxqq_mx 
+  where bdhm = #{bdhm} 
+  </select> 
+ 
+</mapper> 

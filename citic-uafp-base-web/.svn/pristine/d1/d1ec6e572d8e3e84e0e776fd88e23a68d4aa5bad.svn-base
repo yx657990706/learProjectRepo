@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/jdbc
+         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+         http://www.springframework.org/schema/jee
+         http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+
+	<context:property-placeholder location="classpath:database/data-access.properties"  	system-properties-mode="OVERRIDE" />
+
+
+	<!-- jndi通用版 -->
+	
+	<jee:jndi-lookup id="mngDataSource" jndi-name="jdbc/mng" resource-ref="true"/>
+
+ 
+ <!-- junit 测试用 -->
+ <!--
+<bean id="mngDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.ibm.db2.jcc.DB2Driver" />
+        <property name="url" value="jdbc:db2://21.96.1.99:60000/afp" />
+        <property name="username" value="afp" />
+        <property name="password" value="pwd1!!@#$" />
+        <qualifier value="mng" />
+    </bean>
+ -->
+	<!-- mybatis 配置文件 -->
+	<!-- 基本jdbc执行器 -->
+	<bean id="mngJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="mngDataSource" />
+		<qualifier value="mng" />
+	</bean>
+
+	<bean id="mngSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="mngDataSource" />
+		<property name="configLocation" value="classpath:mybatis/mng-mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:citic/**/mng/*.xml" />
+	</bean>
+
+
+	<bean id="mngSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="mngSqlSessionFactory" />
+	</bean>
+
+
+	<bean id="mngDao" class="citic.base.BaseDao">
+		<property name="sqlSessionTemplate"  ref="mngSqlSession"></property>
+		<qualifier value="mng"></qualifier>
+	</bean>
+
+	<!-- 应用程序配置文件 -->
+	<bean id="mngSqlActuator" class="citic.das.utils.SqlActuator">
+		<property name="dataSource" ref="mngDataSource" />
+	</bean>
+
+	<bean id="mngDbMetaInfo" class="citic.das.base.DefaultDbMetaInfo">
+		<property name="dataSource" ref="mngDataSource" />
+	</bean>
+
+	<bean id="mngTableParse" class="citic.das.oracle.OracleTableParse">
+		<property name="appSqlParse" ref="oracleSqlParse" />
+		<property name="dbMetaInfo" ref="mngDbMetaInfo" />
+	</bean>
+
+	<bean id="mngAppExec" class="citic.das.base.BaseAppSqlExec">
+		<property name="appSqlParse" ref="oracleSqlParse" />
+		<property name="sqlActuator" ref="mngSqlActuator" />
+		<qualifier value="mng" />
+	</bean>
+
+	<bean id="mngTableOper" class="citic.das.base.BaseTableOper">
+		<property name="appSqlParse" ref="oracleSqlParse" />
+		<property name="tableParse" ref="mngTableParse" />
+		<property name="sqlActuator" ref="mngSqlActuator" />
+		<qualifier value="mng" />
+	</bean>
+
+
+	<!-- 事务管理器 -->
+	<bean id="mngTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="mngDataSource" />
+	</bean>
+
+</beans>

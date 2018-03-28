@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<mapper namespace="citic.gdjc.ckdj.mapper.busi.Br50_cxqqMapper"> 
+ 
+ <sql id="base_columns"> 
+    docno,caseno,casename,exeunit,datasource,status,orgkey,qrydt,recipient_p,recipient_time,last_up_dt
+ </sql> 
+ <sql id="base_columns_account"> 
+    uniqueid,docno,caseno,bankname,opendate,cardno,cardstatus,account,accname,acctype,subaccount,datatype,exchangetype,banlance,closedate,openbranchno,openbranchname,openbranchtel,closebranchno,addr,tel,bankcode,status,closebranchname,ctac,currency,statusflag,tradedate,openbranchaddr,qrydt
+ </sql> 
+ 
+  <select id="selectBr50_cxqqByVo" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq" resultType="citic.gdjc.ckdj.domain.Br50_cxqq"> 
+   select * from br50_cxqq where 1=1
+   
+      <if test="docno != null  and docno != '' "> 
+       and  docno like '%'|| #{docno} ||'%'
+      </if> 
+      <if test="caseno != null  and caseno != '' "> 
+       and caseno like '%'||#{caseno}||'%'
+      </if> 
+       <if test="orgkey_disp != null  and orgkey_disp != '' "> 
+       and  orgkey in (${orgkey_disp}) 
+      </if>
+       <if test="datasource != null  and datasource != '' "> 
+       and  datasource=#{datasource}
+      </if>
+       <if test="status != null  and status != '' "> 
+       and  status=#{status} 
+      </if>
+      <if test="qrydt_start != null  and qrydt_start != '' ">
+		and qrydt &gt;= #{qrydt_start}
+	</if>
+	<if test="qrydt_end != null  and qrydt_end != '' ">
+		and qrydt &lt;= #{qrydt_end}
+	</if>
+   order by status desc,qrydt desc
+  </select> 
+  
+  
+  
+   <select id="selectBr50_cxqq_back_acctByVo" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq_back_acct" resultType="citic.gdjc.ckdj.domain.Br50_cxqq_back_acct"> 
+   select 
+   <include refid="base_columns_account" /> 
+   from br50_cxqq_back_acct  where 1=1
+      <if test="uniqueid != null  and uniqueid != '' "> 
+        and uniqueid = #{uniqueid} 
+      </if> 
+      <if test="docno != null  and docno != '' "> 
+        and docno = #{docno} 
+      </if> 
+      <if test="datatype != null  and datatype != '' "> 
+        and datatype = #{datatype} 
+      </if> 
+      <if test="caseno != null  and caseno != '' "> 
+        and caseno = #{caseno} 
+      </if> 
+      <if test="cardno != null  and cardno != '' "> 
+        and cardno = #{cardno} 
+      </if> 
+      <if test="account != null  and account != '' "> 
+        and account = #{account} 
+      </if> 
+      <if test="cardstatus != null  and cardstatus != '' "> 
+        and cardstatus = #{cardstatus} 
+      </if> 
+      order by qrydt desc
+  </select> 
+  
+    <select id="selectBr50_cxqq_account_trans" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq_mx" resultType="citic.gdjc.ckdj.domain.Br50_cxqq_mx"> 
+   select  b.docno,b.caseno,b.uniqueid,b.type,b.querymode,b.name,b.idtype,b.id,b.account,b.acctype,b.orgcode,b.startdate,b.enddate,b.qrydt,a.cxfkjg,a.status,c.exeunit,c.casename,c.datasource,t.accname
+   from br50_cxqq_mx b,br50_cxqq c,br50_cxqq_back a,br50_cxqq_back_trans t   where  b.docno=c.docno and b.caseno=c.caseno and b.uniqueid=t.uniqueid and  c.docno=a.docno and c.caseno=a.caseno and b.uniqueid=a.uniqueid
+   
+      <if test="datasource != null  and datasource != '' "> 
+       and  c.datasource = #{datasource} 
+      </if> 
+      <if test="docno != null  and docno != '' "> 
+       and  c.docno = #{docno} 
+      </if> 
+      <if test="caseno != null  and caseno != '' "> 
+        and c.caseno = #{caseno} 
+      </if> 
+       <if test="account != null  and account != '' "> 
+        and b.account = #{account} 
+      </if> 
+       <if test="acctype != null  and acctype != '' "> 
+        and b.acctype = #{acctype} 
+      </if> 
+       <if test="casename != null  and casename != '' "> 
+        and c.casename = #{casename} 
+      </if> 
+       <if test="cxfkjg != null  and cxfkjg != '' "> 
+        and a.cxfkjg = #{cxfkjg} 
+      </if> 
+       <if test="status != null  and status != '' "> 
+        and a.status = #{status} 
+      </if> 
+       <if test="accname != null  and accname != '' "> 
+        and t.accname = #{accname} 
+      </if> 
+      <if test="qrydt_start != null  and qrydt_start != '' ">
+		and b.qrydt &gt;= #{qrydt_start}
+	</if>
+	<if test="qrydt_end != null  and qrydt_end != '' ">
+		and b.qrydt &lt;= #{qrydt_end}
+	</if>
+      order by b.qrydt desc
+   
+  </select>
+
+	<select id="selectBr50_cxqq_back_transByVo" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq_back_trans"
+		resultType="citic.gdjc.ckdj.domain.Br50_cxqq_back_trans">
+		select b.* from br50_cxqq_back_trans b where 1=1
+		<if test="uniqueid != null  and uniqueid != '' ">
+			and b.uniqueid = #{uniqueid}
+		</if>
+		<if test="account != null  and account != '' ">
+			and b.account = #{account}
+		</if>
+		<if test="docno != null  and docno != '' ">
+			and b.docno = #{docno}
+		</if>
+		<if test="caseno != null  and caseno != '' ">
+			and b.caseno = #{caseno}
+		</if>
+		<if test="acctype != null  and acctype != '' ">
+			and b.acctype = #{acctype}
+		</if>
+		<if test="accname != null  and accname != '' ">
+			and b.accname = #{accname}
+		</if>
+		<if test="cardno != null  and cardno != '' ">
+			and b.cardno = #{cardno}
+		</if>
+		<if test="transtype != null  and transtype != '' ">
+			and b.transtype = #{transtype}
+		</if>
+		<if test="transtype != null  and transtype != '' ">
+			and b.transtype = #{transtype}
+		</if>
+		<if test="transtime_start != null  and transtime_end != '' ">
+			and b.transtime &gt;= #{transtime_start}
+		</if>
+		<if test="transtime_end != null  and transtime_end != '' ">
+			and b.transtime &lt;= #{transtime_end}
+		</if>
+		<if test="qrydt_start != null  and qrydt_start != '' ">
+			and b.qrydt &gt;= #{qrydt_start}
+		</if>
+		<if test="qrydt_end != null  and qrydt_end != '' ">
+			and b.qrydt &lt;= #{qrydt_end}
+		</if>
+		order by b.qrydt desc,b.transtime desc
+	</select> 
+ 
+  <insert id="insertBr50_cxqq" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq"> 
+    insert into br50_cxqq(
+    <include refid="base_columns" /> 
+    ) values(
+    #{docno},#{caseno},#{casename},#{exeunit},#{datasource},#{status},#{orgkey},#{qrydt},#{recipient_p},#{recipient_time},#{last_up_dt}
+    ) 
+    </insert> 
+ 
+  <update id="updateBr50_cxqq" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq"> 
+  update br50_cxqq 
+  <set> 
+  <if test="docno != null">
+docno=#{docno},
+</if> 
+<if test="caseno != null">
+caseno=#{caseno},
+</if> 
+<if test="casename != null">
+casename=#{casename},
+</if> 
+<if test="exeunit != null">
+exeunit=#{exeunit},
+</if> 
+<if test="datasource != null">
+datasource=#{datasource},
+</if> 
+<if test="status != null">
+status=#{status},
+</if> 
+<if test="orgkey != null">
+orgkey=#{orgkey},
+</if> 
+<if test="qrydt != null">
+qrydt=#{qrydt},
+</if> 
+<if test="recipient_p != null">
+recipient_p=#{recipient_p},
+</if> 
+<if test="recipient_time != null">
+recipient_time=#{recipient_time},
+</if> 
+<if test="last_up_dt != null">
+last_up_dt=#{last_up_dt}
+</if> 
+
+  </set> 
+  where docno=#{docno} 
+  </update> 
+ 
+  <delete id="deleteBr50_cxqqByID" parameterType="String">  
+  <![CDATA[ delete from br50_cxqq where docno=#{docno} ]]>
+   </delete> 
+ 
+  <select id="selectBr50_cxqqByID" parameterType="String" resultType="citic.gdjc.ckdj.domain.Br50_cxqq"> 
+  select 
+  <include refid="base_columns" /> 
+  from br50_cxqq 
+  where docno=#{docno} 
+  </select> 
+  
+   <select id="selectBr50_cxqqList" parameterType="citic.gdjc.ckdj.domain.Br50_cxqq" resultType="citic.gdjc.ckdj.domain.Br50_cxqq"> 
+  select b.docno,b.caseno,b.casename,b.exeunit,b.datasource,b.orgkey,m.uniqueid, m.type,m.querymode,m.name,m.idtype,m.id,
+  m.account,m.acctype, m.orgcode,m.buslicense,m.threeinone,m.location, m.startdate,m.enddate,m.qrydt,c.status,c.cxfkjg
+  from br50_cxqq b,br50_cxqq_mx m,br50_cxqq_back c 
+  where b.docno=m.docno and m.docno=c.docno and  b.caseno=m.caseno and m.caseno=c.caseno and c.uniqueid=m.uniqueid
+     <if test="docno != null  and docno != '' "> 
+       and  b.docno = #{docno} 
+     </if> 
+     <if test="datasource != null  and datasource != '' "> 
+       and  b.datasource = #{datasource} 
+     </if>
+      <if test="caseno != null  and caseno != '' "> 
+       and  b.caseno = #{caseno} 
+     </if>
+      <if test="orgkey != null  and orgkey != '' "> 
+       and  b.orgkey = #{orgkey} 
+     </if>  
+     <if test="exeunit != null  and exeunit != '' "> 
+       and  b.exeunit = #{exeunit} 
+     </if> 
+     <if test="account != null  and account != '' "> 
+       and  m.account = #{account} 
+     </if> 
+       <if test="type != null  and type != '' "> 
+       and  m.type = #{type} 
+     </if> 
+      <if test="cxfkjg != null  and cxfkjg != '' "> 
+       and  c.cxfkjg = #{cxfkjg} 
+     </if>
+      <if test="status != null  and status != '' "> 
+       and  c.status = #{status} 
+     </if>
+	<if test="querymode != null  and querymode != '' ">
+		and m.querymode = #{querymode}
+	</if>
+
+	<if test="account != null  and account != '' ">
+		and m.account = #{account}
+	</if>
+	<if test="qrydt_start != null  and qrydt_start != '' ">
+		and m.qrydt &gt;= #{qrydt_start}
+	</if>
+	<if test="qrydt_end != null  and qrydt_end != '' ">
+		and m.qrydt &lt;= #{qrydt_end}
+	</if>
+
+	order by m.qrydt desc
+  </select> 
+ 
+</mapper> 

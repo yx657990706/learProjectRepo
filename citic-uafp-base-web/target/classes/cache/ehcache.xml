@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	updateCheck="false">
+	<diskStore path="java.io.tmpdir" />
+	
+	<defaultCache eternal="false" maxElementsInMemory="5000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="14400" memoryStoreEvictionPolicy="LRU" />
+
+	<!-- 元数据缓存 -->
+	<cache name="metaCache" eternal="false" maxElementsInMemory="5000"
+		overflowToDisk="true" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="14400" memoryStoreEvictionPolicy="LRU" />
+	
+	<!-- 用户缓存 -->
+	<cache name="userCache" eternal="false" maxElementsInMemory="5000"
+		overflowToDisk="true" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="14400" memoryStoreEvictionPolicy="LRU" />	
+
+</ehcache>  
+

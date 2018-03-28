@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="citic.aml.system.mapper.busi.CitrthStatisticsMapper">	
+  <select id="selectCitrth_statisticsByVo" parameterType="citic.aml.system.domain.Citrth_statistics" resultType="citic.aml.system.domain.Citrth_statistics"> 
+       select ac_dt,chnl1,count(ts) as  num,sum(tx_amt) as money,count(distinct pay_ac) as account_num from CITRTH_STATISTICS  where lst_cd='FBA'
+      <if test="ac_dt_start != null  and ac_dt_start != '' ">
+		and ac_dt &gt;= #{ac_dt_start}
+	</if>
+	<if test="ac_dt_end != null  and ac_dt_end != '' ">
+		and ac_dt &lt;= #{ac_dt_end}
+	</if>
+      group by ac_dt,chnl1
+  </select> 
+</mapper>
