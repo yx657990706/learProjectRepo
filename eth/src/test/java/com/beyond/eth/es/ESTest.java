@@ -341,36 +341,5 @@ public class ESTest {
 		}
 	}
 
-	/**
-	 * 分组
-	 */
-	@Test
-	public void testGroupBy() {
-		SearchResponse searchResponse = client.prepareSearch(index).setTypes(type).setQuery(QueryBuilders.matchAllQuery()).setSearchType(SearchType.QUERY_THEN_FETCH)
-				.addAggregation(AggregationBuilders.terms("group_age").field("age").size(0))// 根据age分组，默认返回10，size(0)也是10
-				.get();
 
-		Terms terms = searchResponse.getAggregations().get("group_age");
-		List<Bucket> buckets = (List<Bucket>) terms.getBuckets();
-		for (Bucket bt : buckets) {
-			System.out.println(bt.getKey() + " " + bt.getDocCount());
-		}
-	}
-
-	/**
-	 * 聚合函数,本例之编写了sum，其他的聚合函数也可以实现
-	 * 
-	 */
-	@Test
-	public void testMethod() {
-		SearchResponse searchResponse = client.prepareSearch(index).setTypes(type).setQuery(QueryBuilders.matchAllQuery()).setSearchType(SearchType.QUERY_THEN_FETCH)
-				.addAggregation(AggregationBuilders.terms("group_name").field("name").subAggregation(AggregationBuilders.sum("sum_age").field("age"))).get();
-
-		Terms terms = searchResponse.getAggregations().get("group_name");
-		List<Bucket> buckets = (List<Bucket>) terms.getBuckets();
-		for (Bucket bt : buckets) {
-			Sum sum = bt.getAggregations().get("sum_age");
-			System.out.println(bt.getKey() + "  " + bt.getDocCount() + " " + sum.getValue());
-		}
-	}
 }
