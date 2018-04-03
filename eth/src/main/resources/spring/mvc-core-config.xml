@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/task  
-        http://www.springframework.org/schema/task/spring-task-3.1.xsd ">
+        http://www.springframework.org/schema/task/spring-task.xsd ">
 
 	<!-- POJOs labeled with the @Controller and @Service annotations are auto-detected -->
 	<context:component-scan base-package="com.beyond">
@@ -23,10 +23,9 @@
 	
 	<!-- JSP视图解析器 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/views/" />
+	    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
-		<!-- 定义其解析视图的order顺序为1 -->
-		<property name="order" value="1" />
 	</bean>
 	
 	<!-- 首页设置 -->

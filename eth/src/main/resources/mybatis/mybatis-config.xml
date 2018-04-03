@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- sql执行超时时间 -->
+		<setting name="defaultStatementTimeout" value="10" />
+		<!-- 设置自动驼峰命名转换 -->
+		<setting name="mapUnderscoreToCamelCase" value="false" />
+	</settings>
+	<!-- 别名设置 -->
+	<typeAliases>
+		<package name="com.beyond.**.model" />
+	</typeAliases>
+
+	<!-- 多厂商的支持 -->
+	<databaseIdProvider type="DB_VENDOR">
+		<property name="DB2" value="db2" />
+		<property name="Oracle" value="oracle" />
+		<property name="MySQL" value="mysql" />
+	</databaseIdProvider>
+
+</configuration> 

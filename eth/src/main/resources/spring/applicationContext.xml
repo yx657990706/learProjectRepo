@@ -1,27 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 查找最新的schemaLocation 访问 http://www.springframework.org/schema/ -->
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-4.0.xsd
-        http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-<!--        <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
-   --> 
-    	<!-- only scan service for transactional -->
+
+	<!-- only scan service for transactional -->
 	<context:component-scan base-package="com.beyond">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
+
+	 <!-- 引入db.properties -->
+	<context:property-placeholder location="classpath:mybatis/jdbc.properties" />
+	
+	<!-- 数据库连接池配置 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<!-- 指定连接数据库连接池的最小连接数 -->
+		<property name="minPoolSize" value="10"></property>
+		<!-- 指定连接数据库连接池的最大连接数 -->
+		<property name="maxPoolSize" value="20"></property>
+		<!--初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
+		<property name="initialPoolSize" value="15"></property>
+		<!-- 指定连接数据库连接池的连接的最大空闲时间 [可以控制连接超时的时间,单位秒] -->
+		<property name="maxIdleTime" value="120"></property>
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+		<property name="acquireIncrement" value="5"></property>
+		<property name="maxStatements" value="100"></property>
+		<!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
+		<property name="idleConnectionTestPeriod" value="60"></property>
+	</bean>
+	
+	<!-- SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
+		<!-- 自动扫描mapping.xml文件，**表示迭代查找,也可在mybatis-config.xml中单独指定xml文件 不设置该选项,默认接口和xml在同一个路径下-->
+		<!-- <property name="mapperLocations" value="classpath*:com/beyond/**/*.xml" /> -->
+	</bean>
+	
+	<!--下面两种方法，一种是自动是扫描对应的service类，一种是通过注入sqlsessionFactory的方式来获取一个SqlsessionTemplate--> 
+	<!-- scan for mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.beyond.eth.*.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+	<!-- 配置SqlSessionTemplate -->
+ <!--      <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+         通过构造函数注入
+         <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+      </bean> -->
+	
+	<!--事务管理DataSourceTransactionManager -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	 <!-- 可通过注解控制事务 -->  
+    <tx:annotation-driven />
+	
+   
 </beans>
