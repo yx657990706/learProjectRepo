@@ -18,12 +18,13 @@
 	
 	<mvc:annotation-driven />
 
+    <!-- ActiveMQ连接工厂 -->
 	<amq:connectionFactory id="amqConnectionFactory" brokerURL="tcp://172.16.11.130:61616" userName="admin" password="admin" /> 
-
   
-	<!-- 配置JMS连接工厂 -->
+	<!-- 配置spring JMS连接工厂 -->
 	<bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
-		<constructor-arg ref="amqConnectionFactory" />
+		<!-- <constructor-arg ref="amqConnectionFactory" /> -->
+		<property name="targetConnectionFactory" ref="amqConnectionFactory"/>
 		<property name="sessionCacheSize" value="100" />
 	</bean> 
 
@@ -37,18 +38,16 @@
 	</bean> 
   
 
-	<!-- 定义消息队列（Queue） -->
+	<!-- 队列目的地 -->
 	<bean id="demoQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<!-- 设置消息队列的名字 -->
-		<constructor-arg>
-			<value>Jaycekon</value>
-		</constructor-arg>
+		<constructor-arg value="Jaycekon"/>
 	</bean>
 
 	<!-- 配置消息队列监听者（Queue） -->
 <!-- 	<bean id="queueMessageListener" class="com.beyond.mq.filter.QueueMessageListener" />
  -->
-	<!-- 显示注入消息监听容器（Queue），配置连接工厂，监听的目标是demoQueueDestination，监听器是上面定义的监听器 -->
+	<!-- 配置监听容器 显示注入消息监听容器（Queue），配置连接工厂，监听的目标是demoQueueDestination，监听器是上面定义的监听器 -->
 	<!-- <bean id="queueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="connectionFactory" />
 		<property name="destination" ref="demoQueueDestination" />
