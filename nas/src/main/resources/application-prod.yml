@@ -1,0 +1,14 @@
+logging:
+  level: 
+    com.leo.nas.coin: info #设置包级别的日志
+server:
+  port: 8080 
+  servlet:
+    context-path: /nas 
+    
+coin: 
+   shortName: NAS   
+   name: Nebula
+   zhName: 星云链
+   icoPrice: 14
+   icoTotal: 20000000

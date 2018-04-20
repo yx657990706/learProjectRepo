@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.leo.nas.coin.dao.CoinMapper">
+    <select id="selectCoinList" resultType="com.leo.nas.coin.model.Coin">
+        select name,shortname,zhname,icoprice,icototle from t_coin
+    </select>   
+</mapper>

@@ -1,0 +1,17 @@
+# 环境切换设置 yml文件名格式需一致
+spring:
+  profiles:
+    active: dev
+  # 数据源设置  
+  datasource:
+    url: jdbc:mysql://localhost:3306/mysql
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+mybatis:
+  #实体类所在包
+  type-aliases-package: com.leo.nas.*.model
+  #mapper.xml所在位置
+  mapper-locations: classpath:mappers/**/*.xml
