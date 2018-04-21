@@ -1,6 +1,6 @@
 logging:
   level: 
-    com.leo.nas.coin: trace #设置包级别的日志
+    com.leo.nas.coin: debug #设置包级别的日志
     
 server:
   port: 8080 
