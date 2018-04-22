@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="false">
+<!-- <configuration scan="false" > -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false"> 
 
+	<!-- 彩色日志 -->  
+   <!--  <property name="CONSOLE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{36}) - %highlight(%msg) %n" />  
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">  
+       <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>  
+    </encoder>
+    </appender>   -->
+     
+	<!-- 非彩色日志 -->
 	<!-- 输出日志到控制台 -->
 	<!-- %d{HH: mm:ss.SSS}——日志输出时间 -->
 	<!-- %thread——输出日志的进程名字，这在Web应用以及异步任务处理中很有用 -->
@@ -10,10 +20,10 @@
 	<!-- %n——平台的换行符 -->
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
-			</pattern>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n </pattern>
 		</encoder>
-	</appender>
+	</appender> 
+
 	<!-- 输出日志到文件 -->
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -43,12 +53,14 @@
 	<!-- 根据环境设置日志级别,适合jar 如:java -jar xxx.jar –spring.profiles.active=prod -->
 	<!-- 测试环境+开发环境. 多个使用逗号隔开. -->
 	<springProfile name="dev">
-		<logger name="com.leo.nas" level="debug" />
+		<!-- <logger name="com.leo.nas" level="debug" /> -->
+		<logger name="com.leo.nas" level="debug" additivity="false"> <appender-ref ref="STDOUT" /> </logger>
 	</springProfile>
 	<!-- 生产环境. -->
 	<springProfile name="prod">
-		<logger name="com.leo.nas" level="info" />
+		<!-- <logger name="com.leo.nas" level="info" /> -->
+		<logger name="com.leo.nas" level="info" additivity="false"> <appender-ref ref="FILE" /> </logger>
 	</springProfile>
 
-  
+
 </configuration>

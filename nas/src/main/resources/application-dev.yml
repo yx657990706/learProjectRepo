@@ -2,12 +2,15 @@
 #logging:
 #  level: 
 #    com.leo.nas.coin: debug #设置包级别的日志
-    
+# ANSI，设置彩色输出会让日志更具可读性    
+spring:
+  output:
+    ansi:
+      enabled: detect    
 server:
   port: 8080 
   servlet:
-    context-path: /nas
-    
+    context-path: /nas 
 coin: 
    shortName: NAS01   
    name: Nebula

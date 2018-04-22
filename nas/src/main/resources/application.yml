@@ -1,7 +1,7 @@
 # 环境切换设置 yml文件名格式需一致
 spring:
   profiles:
-    active: prod
+    active: dev
     
   # 数据源设置  
   datasource:
