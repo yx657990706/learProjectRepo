@@ -1,6 +1,8 @@
+# Spring默认的基础配置日志
 logging:
   level: 
     com.leo.nas.coin: info #设置包级别的日志
+    
 server:
   port: 8080 
   servlet:
