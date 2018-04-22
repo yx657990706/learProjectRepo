@@ -1,4 +1,4 @@
-package com.leo.nas.servlert;
+package com.leo.nas.common.servlert;
 
 import javax.servlet.Servlet;
 import javax.servlet.annotation.WebInitParam;
@@ -7,8 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import com.alibaba.druid.support.http.StatViewServlet;
 
 /** 
- * druid数据源状态监控 
- * Servlet implementation class DruidStateViewServlet 
+ * druid数据源状态监控<br> 
+ * 访问方式 127.0.0.1:8080/nas/druid
  */  
 @WebServlet(  
         urlPatterns= {"/druid/*"},  

@@ -1,13 +1,17 @@
-package com.leo.nas.filter;
+package com.leo.nas.common.filter;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 
 import com.alibaba.druid.support.http.WebStatFilter;
 
-/** 
- * Servlet Filter implementation class DruidFilter 
- */  
+/**
+ * 
+ *@Description: druid连接池的过滤器
+ *
+ * @author yinxiong
+ * @date 2018-04-22 23:38:49
+ */
 @WebFilter(  
         filterName="druidWebStatFilter",  
         urlPatterns= {"/*"},  

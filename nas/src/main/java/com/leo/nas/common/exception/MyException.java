@@ -1,6 +1,6 @@
-package com.leo.nas.exception;
+package com.leo.nas.common.exception;
 
-import com.leo.nas.enums.ResltEnum;
+import com.leo.nas.common.enums.ResltEnum;
 
 public class MyException extends RuntimeException {
 

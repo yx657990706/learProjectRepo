@@ -1,4 +1,4 @@
-package com.leo.nas.conf;
+package com.leo.nas.common.conf;
 
 import javax.sql.DataSource;
 
@@ -11,7 +11,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import com.alibaba.druid.pool.DruidDataSource;
-
+/**
+ * 
+ *@Description: druid数据源参数设置类
+ *
+ * @author yinxiong
+ * @date 2018-04-22 23:42:06
+ */
 @Configuration // 标识该类被纳入spring容器中实例化并管理
 @Primary // 在同样的DataSource中，首先使用被标注的DataSource
 public class DruidConfig extends DataSourceProperties {
