@@ -7,4 +7,9 @@
     <insert id="insertCoin" parameterType="com.leo.nas.coin.model.Coin">
          insert t_coin(name,shortname,zhname,icoprice,icototle) VALUES (#{name},#{shortName},#{zhName},#{icoPrice},#{icoTotle})
     </insert>
+    <select id="selectCoinById" parameterType="String" resultType="com.leo.nas.coin.model.Coin">
+      select id,name,shortname,zhname,icoprice,icototle 
+      from t_coin
+      where id = ${_parameter}
+    </select>
 </mapper>

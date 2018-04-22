@@ -7,6 +7,7 @@ import javax.validation.constraints.Min;
 @Data
 public class Coin {
 
+	private Integer id;
 	private String shortName;
 	private String name;
 	private String zhName;

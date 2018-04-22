@@ -13,11 +13,18 @@ public interface CoinMapper {
 	 * 查询coin列表
 	 * @return
 	 */
-	List<Coin> selectCoinList();
+	public List<Coin> selectCoinList();
 
 	/**
 	 * 插入信息
 	 * @param coin
 	 */
-	void insertCoin(Coin coin);
+	public void insertCoin(Coin coin);
+	
+	/**
+	 * 根据id查询币种信息
+	 * @param id
+	 * @return
+	 */
+	public Coin selectCoinById(Integer id);
 }
