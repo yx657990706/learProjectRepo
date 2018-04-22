@@ -14,5 +14,10 @@ public interface CoinMapper {
 	 * @return
 	 */
 	List<Coin> selectCoinList();
-	
+
+	/**
+	 * 插入信息
+	 * @param coin
+	 */
+	void insertCoin(Coin coin);
 }

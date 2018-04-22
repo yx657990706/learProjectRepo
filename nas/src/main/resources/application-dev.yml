@@ -1,6 +1,7 @@
-logging:
-  level: 
-    com.leo.nas.coin: debug #设置包级别的日志
+#已设置logback策略,基础日志配置不用了
+#logging:
+#  level: 
+#    com.leo.nas.coin: debug #设置包级别的日志
     
 server:
   port: 8080 

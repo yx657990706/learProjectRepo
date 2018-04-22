@@ -2,17 +2,24 @@ package com.leo.nas.coin.controller;
 
 import java.util.List;
 
+import com.leo.nas.coin.service.CoinService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import com.leo.nas.coin.dao.CoinMapper;
 import com.leo.nas.coin.model.Coin;
 import com.leo.nas.coin.propertis.NasPropertis;
 
+import javax.validation.Valid;
+
 @RestController
 public class coinContoller {
+
+	private Logger logger = LoggerFactory.getLogger(coinContoller.class);
 
 	@Autowired
 	private NasPropertis nasPropertis;//以类的结构形式引入properties的值
@@ -20,8 +27,11 @@ public class coinContoller {
 	@Value("${coin.zhName}")
 	private String zhName;
 	
+//	@Autowired
+//	private CoinMapper  coinMapper;
+
 	@Autowired
-	private CoinMapper  coinMapper;
+	private CoinService coinService;
 	/**
 	 * 测试配置文件读取
 	 * @return
@@ -51,10 +61,20 @@ public class coinContoller {
 	 */
 	@GetMapping(value="/coinInfo3")
 	public String outputCoinInfo3() {
-		List<Coin> list = coinMapper.selectCoinList();
+		logger.info("=================日志测试======================");
+		List<Coin> list = coinService.selectCoinList();
 		return list.size()+"";
 	}
-	
-	
+
+	@PostMapping(value="/coinInfo4")
+	public String outputCoinInfo4(@Valid Coin coin, BindingResult bindingResult) {
+		logger.info("=================日志测试2======================");
+		if(bindingResult.hasErrors()){
+			logger.info("================={}======================",bindingResult.getFieldError().getDefaultMessage());
+			return null;
+		}
+		coinService.insertCoin(coin);
+		return "ok";
+	}
 	
 }

@@ -3,5 +3,8 @@
 <mapper namespace="com.leo.nas.coin.dao.CoinMapper">
     <select id="selectCoinList" resultType="com.leo.nas.coin.model.Coin">
         select name,shortname,zhname,icoprice,icototle from t_coin
-    </select>   
+    </select>
+    <insert id="insertCoin" parameterType="com.leo.nas.coin.model.Coin">
+         insert t_coin(name,shortname,zhname,icoprice,icototle) VALUES (#{name},#{shortName},#{zhName},#{icoPrice},#{icoTotle})
+    </insert>
 </mapper>
