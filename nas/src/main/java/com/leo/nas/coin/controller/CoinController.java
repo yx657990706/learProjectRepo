@@ -95,4 +95,10 @@ public class CoinController {
 		return null;
 	}
 	
+	@GetMapping(value="/coinInfo6")
+	public String outputCoinInfo6() {
+		logger.info("=================分页测试======================");
+		 coinService.selectCoinList(2,2);
+		return "";
+	}
 }

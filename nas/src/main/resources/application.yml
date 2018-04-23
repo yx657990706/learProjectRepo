@@ -49,3 +49,10 @@ mybatis:
   type-aliases-package: com.leo.nas.*.model
   # mapper.xml所在位置
   mapper-locations: classpath:mappers/**/*.xml
+# 分页插件  
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    pageSizeZero: true
+    params: count=countSql    
