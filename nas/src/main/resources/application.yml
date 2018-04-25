@@ -3,7 +3,7 @@ spring:
   profiles:
     active: dev
     
-  # 数据源设置  
+#################数据源设置#################  
   datasource:
        # url: jdbc:mysql://localhost:3306/mysql?useUnicode=true&characterEncoding=utf-8&useSSL=true
        # username: root
@@ -42,17 +42,45 @@ spring:
          connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
           # 合并多个DruidDataSource的监控数据
          useGlobalDataSourceStat: true
-
+         
+#################redis基础配置#################
+  redis:
+     database: 1 
+     host: 127.0.0.1
+     port: 6379
+     # 连接超时时间 单位 ms（毫秒）
+     timeout: 20000
+#################redis线程池设置#################
+     # 连接池中的最大空闲连接，默认值也是8。
+     pool:
+         jiedis:
+            max-idle: 8
+           #连接池中的最小空闲连接，默认值也是0。
+            min-idle: 2
+           # 如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
+            max-active: 8
+           # 等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException
+            max-wait: 1000
+#################redis哨兵设置#################
+     # Redis服务器master的名字
+       #sentinel:
+           #master: master8026
+       # redis-sentinel的配置地址和端口
+           #nodes: 10.189.80.25:26379,10.189.80.26:26379,10.189.80.27:26378
+           
+#################mybatis设置#################           
 mybatis:
   # 当只有单数据源的时候dao和mapper的映射可以直接通过如下配置指定 
   # 实体类所在包
   type-aliases-package: com.leo.nas.*.model
   # mapper.xml所在位置
   mapper-locations: classpath:mappers/**/*.xml
+  
+#################分页插件 设置#################   
 # 分页插件  
 pagehelper:
     helperDialect: mysql
     reasonable: true
     supportMethodsArguments: true
     pageSizeZero: true
-    params: count=countSql    
+    params: count=countSql        

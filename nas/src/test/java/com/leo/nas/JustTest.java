@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.pagehelper.util.StringUtil;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -18,6 +20,12 @@ public class JustTest extends BaseJunitTest{
 	
 	@Test
 	public void outLogger() {
+		String custId = (String) null;
+		if(StringUtil.isEmpty(custId)) {
+			log.info("11111111");
+		}else {
+			log.info("22222222");
+		}
 		//级别排序为： TRACE < DEBUG < INFO < WARN < ERROR
 		log.trace("======TRACE======");
 		log.debug("======debug======");
