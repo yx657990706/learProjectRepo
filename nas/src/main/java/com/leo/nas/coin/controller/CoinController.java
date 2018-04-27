@@ -8,10 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.leo.nas.coin.model.Coin;
@@ -31,8 +33,6 @@ public class CoinController {
 	@Value("${coin.zhName}")
 	private String zhName;
 	
-//	@Autowired
-//	private CoinMapper  coinMapper;
 
 	@Autowired
 	private CoinService coinService;
@@ -64,8 +64,8 @@ public class CoinController {
 	 * @return
 	 */
 	@GetMapping(value="/coinInfo3")
-	public String outputCoinInfo3() {
-		logger.info("=================日志测试======================");
+	public String outputCoinInfo3(@RequestParam(required=true)String id) {
+		logger.info("=================cache测试======================");
 		List<Coin> list = coinService.selectCoinList();
 		return list.size()+"";
 	}
